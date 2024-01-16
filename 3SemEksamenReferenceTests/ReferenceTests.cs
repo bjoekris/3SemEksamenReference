@@ -14,6 +14,7 @@ namespace _3SemEksamenReference.Tests
     public class ReferenceTests
     {
         #region Objekter med værdier til test
+        //Et skabelon objekt
         private Reference refe = new Reference { Id = 1, Name = "Bjørn", Price = 111, Quality = 1, InStock = 11, RefTypeBrand = "Blå" };
 
         //Priser må ikke være negative (Eller 0 ifølge opgaven)
@@ -35,7 +36,7 @@ namespace _3SemEksamenReference.Tests
         #endregion
 
 
-        #region Unit test af validate metoder
+        #region Unit test af validate metoder til properties
 
         //Test af Price
         [TestMethod()]
@@ -47,7 +48,6 @@ namespace _3SemEksamenReference.Tests
         }
 
         //Test af Quality
-
         [TestMethod()]
         public void ValidateQualityTest()
         {
