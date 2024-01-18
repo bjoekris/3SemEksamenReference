@@ -13,6 +13,11 @@ namespace _3SemEksamenReference.Tests
     [TestClass()]
     public class ReferenceTests
     {
+
+    
+
+
+
         #region Objekter med værdier til test
         //Et skabelon objekt
         private Reference refe = new Reference { Id = 1, Name = "Bjørn", Price = 111, Quality = 1, InStock = 11, RefTypeBrand = "Blå" };
@@ -35,8 +40,36 @@ namespace _3SemEksamenReference.Tests
 
         #endregion
 
+        //ToString test
+        public void ToStringTest()
+        {
+            Assert.AreEqual("Id=1, Name=Bjørn, Price=111, Quality=1, InStock=11, RefTypeBrand=Blå", refe.ToString());
+        }
 
-        #region Unit test af validate metoder til properties
+
+        #region Unit test af validate metoder
+
+        //Test af validatemetoder i EN Metoder
+        [TestMethod()]
+        public void ValidateTest()
+        {
+            Assert.ThrowsException<ArgumentException>(() => priceZeroRefe.Validate());
+            Assert.ThrowsException<ArgumentException>(() => priceNegativeRefe.Validate());
+
+            Assert.ThrowsException<ArgumentException>(() => qualityZeroRefe.Validate());
+            Assert.ThrowsException<ArgumentException>(() => qualityNegativeRefe.Validate());
+            Assert.ThrowsException<ArgumentException>(() => qualityOverRefe.Validate());
+
+            Assert.ThrowsException<ArgumentException>(() => inStockNegativeRefe.Validate());
+
+            Assert.ThrowsException<ArgumentException>(() => refTypeBrandShortRefe.Validate());
+
+            refe.Validate();
+        }
+
+
+        //Test af diverse metoder i hver sin metode
+
 
         //Test af Price
         [TestMethod()]

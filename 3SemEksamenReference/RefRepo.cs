@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace _3SemEksamenReference
 {
@@ -10,14 +12,14 @@ namespace _3SemEksamenReference
     public class RefRepo
     {
 
-        //Default liste?
+        //Laver liste
         private readonly List<Reference> refe = new();
 
         //Sikrer nyt id 
         private int nextId = 1;
 
         #region 5 objekter med diverse værdier
-        //Der indsættes 5 objekter med diverse værdier
+        //Der indsættes 5 objekter til listen
         public RefRepo()
         {
             
@@ -34,16 +36,12 @@ namespace _3SemEksamenReference
         #region Metoder
 
 
-        //GetAll Metode
-        //Laver en liste med alle objekter.
+        //3 forskellige Get() / GetAll metoder
         public List<Reference> GetAllRef()
         {
             return new List<Reference>(refe);
         }
 
-
-        //Get() Metode
-        //Returnere en liste af model-klassen 
         public List<Reference> GetRef()
         {
             if (refe == null)
@@ -51,6 +49,12 @@ namespace _3SemEksamenReference
                 return null;
             }
             return new List<Reference>(refe);
+        }
+
+        public IEnumerable<Reference> Get()
+        {
+            IEnumerable<Reference> re = new List<Reference>(refe);
+            return re;
         }
 
 
@@ -66,16 +70,17 @@ namespace _3SemEksamenReference
 
         //Add metode
         //Hvis fejl, husk at lave void validate i "reference" klassen.
-        //re.Id sørger for nyt id (Næste i rækken)
+        //Laver nyt it, validere det og tilføjer til listen
         public Reference AddRef(Reference re)
         {
-            re.Validate();
             re.Id = nextId++;
+            re.Validate();
             refe.Add(re);
             return re;
         }
 
         //Update metode
+        //Validere nye værdier (Ikke id, kan skabe problemer). Opdaterer derefter værdierne.
         public Reference UpdateRef(int id, Reference refe)
         {
             refe.Validate();
@@ -92,6 +97,22 @@ namespace _3SemEksamenReference
             return oldRefe;
         }
 
+
+        //Finder objektet (Hvis det findes) og fjerner hele objektet (Sammen med resten af værdierne)
+        public Reference DeleteRef(int id)
+        {
+            Reference re = GetRefById(id);
+
+            if (re == null)
+            {
+                return null;
+            }
+
+            refe.Remove(re);
+            return (re);
+
+        }
+
         //Get Low Stock metode
         public Reference GetLowStock(int InStock, int stockLevel)
         {
@@ -104,6 +125,11 @@ namespace _3SemEksamenReference
             return re;
         }
 
+
+        public IEnumerable<Reference> GetLowStockAlt(int stockLevel)
+        {
+            return refe.FindAll(r => stockLevel > r.InStock);
+        }
 
 
 
